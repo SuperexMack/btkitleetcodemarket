@@ -3,6 +3,7 @@ import { AnimatedGradientTextDemo } from "./mainbutton";
 import { HighlighterDemo } from "./uniqueDesigntext";
 import { ConfettiCustomShapes } from "./magicbutton";
 import { AnimatedImageDemo } from "./AnimatedImage";
+import "../globals.css"
 
 export function GridBeamsDemo() {
   return (
@@ -25,7 +26,7 @@ export function GridBeamsDemo() {
           </div>
 
           <div className="w-[60%] flex flex-col space-y-5 text-center">
-            <h1 className="text-[70px] font-bold text-white">The New Way of creating you value in BTKIT is Leetcode</h1>
+            <h1 className="main-text text-[70px] font-bold text-white">The New Way of creating you value in BTKIT is Leetcode</h1>
             <HighlighterDemo></HighlighterDemo>
           </div>
 
