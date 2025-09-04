@@ -1,11 +1,13 @@
 import jwt from "jsonwebtoken";
 import express from "express";
-import zod, { json } from "zod";
+import zod from "zod";
 import { PrismaClient } from "@prisma/client";
 import axios from "axios";
+import dotenv from "dotenv"
 const Prisma = new PrismaClient();
 const router = express.Router();
-require("dotenv").config();
+
+dotenv.config()
 
 const jwtSecret = process.env.SECRET;
 
@@ -13,7 +15,6 @@ const userChecker = zod.object({
   username: zod.string(),
   password: zod.string(),
   gender: zod.string(),
-  image: zod.string(),
 });
 
 router.post("/signup", async (req, res) => {
@@ -67,7 +68,7 @@ router.post("/signup", async (req, res) => {
 
       let userData = [];
 
-      const caller = async () => {
+      const caller = async() => {
         const datacollection = await axios.post(url, userQuestionsData);
         datacollection.data.data.matchedUser.submitStats.acSubmissionNum.map(
           (value) => {
@@ -78,21 +79,33 @@ router.post("/signup", async (req, res) => {
         );
       };
 
+      await caller()
+
+      console.log(userData)
+
+      console.log("main")
+
       let easy = userData[1].solved;
       let medium = userData[2].solved;
       let hard = userData[3].solved;
 
+
       console.log(easy + " " + medium + " " + hard)
+
+      console.log("we are here part 1")
 
       let createUserQuestionsData = await Prisma.userSolved.create({
         data:{
             easySolved:easy,
             mediumSolved : medium,
-            hardSolved:hard
+            hardSolved:hard,
+            UserId: userDataEntry.id
         }
       });
 
-      if(createUserQuestionsData) return res.json({msg:"User problem numbers added successfully"})
+      console.log("we are here part 2")
+
+      if(!createUserQuestionsData) return res.json({msg:"Unable to get the users problem solved"})
 
       let userToken = jwt.sign({ userDataEntry }, jwtSecret);
       return res.json({
@@ -101,8 +114,7 @@ router.post("/signup", async (req, res) => {
       });
     }
     
-    else
-      return res.json({ msg: "Something went wrong while creating the data" });
+    else return res.json({ msg: "Something went wrong while creating the data" });
   } 
   catch (err) {
     console.log(`Something went wrong while creating the user ` + err);
@@ -115,8 +127,6 @@ router.post("/signup", async (req, res) => {
 const userLoginchecker = zod.object({
   username: zod.string(),
   password: zod.string(),
-  gender: zod.string(),
-  image: zod.string(),
 });
 
 router.post("/login", async (req, res) => {
@@ -138,14 +148,18 @@ router.post("/login", async (req, res) => {
         msg: `Welcome Back to the BTKITleetcodemarket ${username}`,
         token: userToken,
       });
-    } else
+    } 
+    else
       return res.json({
         msg: "Something went wrong while checking the data during login",
       });
-  } catch (err) {
+  } 
+  catch (err) {
     console.log(`Something went wrong while checking the user ` + err);
     return res.json({
       msg: `Something went wrong while checking the user ` + err,
     });
   }
 });
+
+export default router

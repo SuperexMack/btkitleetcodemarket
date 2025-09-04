@@ -1,9 +1,17 @@
 import express from "express"
 const app = express()
+import userAuth from "./Controller/userAuth.js"
+import dotenv from "dotenv"
+import cors from "cors"
 
-require("dotenv").config()
+dotenv.config()
 
 const PORT = process.env.PORT
+
+app.use(cors())
+app.use(express.json())
+
+app.use("/v1/userauth" , userAuth)
 
 
 app.get("/" , (req,res)=>{

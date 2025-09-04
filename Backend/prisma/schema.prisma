@@ -25,9 +25,9 @@ model user{
 
 model userSolved{
   id String @id @default(uuid()) @db.Uuid
-  easySolved String
-  mediumSolved String
-  hardSolved String
+  easySolved Int
+  mediumSolved Int
+  hardSolved Int
   userDatafunction user @relation(fields: [UserId] , references: [id])
   UserId String @db.Uuid
 }
