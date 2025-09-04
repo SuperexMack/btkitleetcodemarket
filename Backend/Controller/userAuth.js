@@ -78,16 +78,33 @@ router.post("/signup", async (req, res) => {
         );
       };
 
-      let createUserQuestionsData = await Prisma.userSolved.create({});
+      let easy = userData[1].solved;
+      let medium = userData[2].solved;
+      let hard = userData[3].solved;
+
+      console.log(easy + " " + medium + " " + hard)
+
+      let createUserQuestionsData = await Prisma.userSolved.create({
+        data:{
+            easySolved:easy,
+            mediumSolved : medium,
+            hardSolved:hard
+        }
+      });
+
+      if(createUserQuestionsData) return res.json({msg:"User problem numbers added successfully"})
 
       let userToken = jwt.sign({ userDataEntry }, jwtSecret);
       return res.json({
         msg: `Welcome to the BTKITleetcodemarket ${username}`,
         token: userToken,
       });
-    } else
+    }
+    
+    else
       return res.json({ msg: "Something went wrong while creating the data" });
-  } catch (err) {
+  } 
+  catch (err) {
     console.log(`Something went wrong while creating the user ` + err);
     return res.json({
       msg: `Something went wrong while creating the user ` + err,
