@@ -4,7 +4,7 @@ export function HighlighterDemo() {
   return (
     <div className="text-center">
       <p className="leading-relaxed text-[20px] text-white">
-        BTKITLeetcodemArket is The{" "}
+        BTKITLeetCodemArket is The{" "}
         <Highlighter action="underline" color="#FF9800">
           Market
         </Highlighter>{" "}
