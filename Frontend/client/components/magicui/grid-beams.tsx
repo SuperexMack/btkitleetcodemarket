@@ -6,7 +6,9 @@ import { cn } from "@/lib/utils";
 
 const createGridMask = (start: number, end: number): string => {
   const mid = (start + end) / 2;
-  return `linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.05) ${start}%, rgba(0,0,0,0.2) ${mid}%, rgba(0,0,0,0.6) ${end - 20}%, rgba(0,0,0,1) ${end}%)`;
+  return `linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.05) ${start}%, rgba(0,0,0,0.2) ${mid}%, rgba(0,0,0,0.6) ${
+    end - 20
+  }%, rgba(0,0,0,1) ${end}%)`;
 };
 
 const generateRayConfig = (index: number, total: number) => {
@@ -56,62 +58,64 @@ interface LightRayProps {
   length: string;
 }
 
-const LightRay = React.memo<LightRayProps>(
-  ({
-    left,
-    rotation,
-    width,
-    delay,
-    duration,
-    swayDuration,
-    swayDelay,
-    blurAmount,
-    isStrongerSway,
-    opacity,
-    speed,
-    length,
-  }) => {
-    return (
-      <motion.div
-        className="absolute pointer-events-none -top-[5%] left-[var(--ray-left)] w-[var(--ray-width)] h-[var(--ray-height)] origin-top mix-blend-screen bg-[linear-gradient(to_bottom,rgba(200,220,255,var(--ray-opacity)),rgba(200,220,255,0))] blur-[var(--ray-blur)] translate-x-[-50%] rotate-[var(--ray-rotation)]"
-        style={
-          {
-            "--ray-left": left,
-            "--ray-width": `${width}px`,
-            "--ray-height": length,
-            "--ray-opacity": opacity,
-            "--ray-blur": `${blurAmount}px`,
-            "--ray-rotation": `${rotation}deg`,
-          } as React.CSSProperties
-        }
-        animate={{
-          opacity: [0.3, 0.7, 0.3],
-          transform: [
-            `translateX(-50%) rotate(${rotation}deg)`,
-            `translateX(-50%) rotate(${rotation + (isStrongerSway ? 1 : 0.5)}deg)`,
-            `translateX(-50%) rotate(${rotation}deg)`,
-          ],
-        }}
-        transition={{
-          opacity: {
-            duration: duration / speed,
-            delay: delay / speed,
-            repeat: Infinity,
-            ease: "easeInOut",
-          },
-          transform: {
-            duration: swayDuration / speed,
-            delay: swayDelay / speed,
-            repeat: Infinity,
-            ease: "easeInOut",
-          },
-        }}
-      />
-    );
-  },
-);
+// ✅ Named component inside React.memo
+const LightRayComponent: React.FC<LightRayProps> = ({
+  left,
+  rotation,
+  width,
+  delay,
+  duration,
+  swayDuration,
+  swayDelay,
+  blurAmount,
+  isStrongerSway,
+  opacity,
+  speed,
+  length,
+}) => {
+  return (
+    <motion.div
+      className="absolute pointer-events-none -top-[5%] left-[var(--ray-left)] w-[var(--ray-width)] h-[var(--ray-height)] origin-top mix-blend-screen bg-[linear-gradient(to_bottom,rgba(200,220,255,var(--ray-opacity)),rgba(200,220,255,0))] blur-[var(--ray-blur)] translate-x-[-50%] rotate-[var(--ray-rotation)]"
+      style={
+        {
+          "--ray-left": left,
+          "--ray-width": `${width}px`,
+          "--ray-height": length,
+          "--ray-opacity": opacity,
+          "--ray-blur": `${blurAmount}px`,
+          "--ray-rotation": `${rotation}deg`,
+        } as React.CSSProperties
+      }
+      animate={{
+        opacity: [0.3, 0.7, 0.3],
+        transform: [
+          `translateX(-50%) rotate(${rotation}deg)`,
+          `translateX(-50%) rotate(${
+            rotation + (isStrongerSway ? 1 : 0.5)
+          }deg)`,
+          `translateX(-50%) rotate(${rotation}deg)`,
+        ],
+      }}
+      transition={{
+        opacity: {
+          duration: duration / speed,
+          delay: delay / speed,
+          repeat: Infinity,
+          ease: "easeInOut",
+        },
+        transform: {
+          duration: swayDuration / speed,
+          delay: swayDelay / speed,
+          repeat: Infinity,
+          ease: "easeInOut",
+        },
+      }}
+    />
+  );
+};
 
-LightRay.displayName = "LightRay";
+const LightRay = React.memo(LightRayComponent);
+LightRay.displayName = "LightRay"; // ✅ fixes eslint warning
 
 export const GridBeams: React.FC<GridBeamsProps> = ({
   children,
@@ -185,3 +189,5 @@ export const GridBeams: React.FC<GridBeamsProps> = ({
     </div>
   );
 };
+
+GridBeams.displayName = "GridBeams"; 
