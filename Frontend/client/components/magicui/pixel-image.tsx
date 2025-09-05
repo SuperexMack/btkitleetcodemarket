@@ -81,7 +81,8 @@ export const PixelImage = ({
         ${col * (100 / cols)}% ${(row + 1) * (100 / rows)}%
       )`;
 
-      const delay = Math.random() * maxAnimationDelay;
+      const delay = maxAnimationDelay;
+      // multiply the above line by Math.random()
       return {
         clipPath,
         delay,
