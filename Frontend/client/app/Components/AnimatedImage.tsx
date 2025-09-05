@@ -1,11 +1,14 @@
 import { PixelImage } from "@/components/magicui/pixel-image";
+import Image from "next/image";
 
 export function AnimatedImageDemo() {
   return (
-    <PixelImage
+    <Image
       src="/dsa.png"
-      customGrid={{ rows: 4, cols: 6 }}
-      grayscaleAnimation
+      width={1300}
+      height={700}
+      className="w-[1300px] h-[700px]"
+      alt="lc-image"
     />
   );
 }
