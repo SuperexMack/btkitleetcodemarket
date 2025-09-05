@@ -1,4 +1,3 @@
-import { PixelImage } from "@/components/magicui/pixel-image";
 import Image from "next/image";
 
 export function AnimatedImageDemo() {
