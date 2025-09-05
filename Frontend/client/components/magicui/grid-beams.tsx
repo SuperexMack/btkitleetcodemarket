@@ -58,7 +58,6 @@ interface LightRayProps {
   length: string;
 }
 
-// ✅ Named function component
 const LightRayComponent: React.FC<LightRayProps> = ({
   left,
   rotation,
@@ -114,11 +113,9 @@ const LightRayComponent: React.FC<LightRayProps> = ({
   );
 };
 
-// ✅ Memoized with explicit displayName
 const LightRay = React.memo(LightRayComponent);
 LightRay.displayName = "LightRay";
 
-// ✅ GridBeams main component
 export const GridBeams: React.FC<GridBeamsProps> = ({
   children,
   className,
@@ -192,5 +189,4 @@ export const GridBeams: React.FC<GridBeamsProps> = ({
   );
 };
 
-// ✅ Explicit displayName for GridBeams
 GridBeams.displayName = "GridBeams";
